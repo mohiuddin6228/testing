@@ -4,7 +4,7 @@ import 'package:insta_auth_test/instagram.dart' as insta;
 import 'package:insta_auth_test/constants.dart';
 
 abstract class LoginViewContract {
-  void onLoginScuccess(insta.Token token);
+  void onLoginScuccess(String code);
   void onLoginError(String message);
 }
 
@@ -14,7 +14,7 @@ class LoginPresenter {
 
   void perform_login(BuildContext context) {
     assert(_view != null);
-    insta.getToken(Constants.APP_ID, Constants.APP_SECRET,context).then((token) {
+    insta.getToken(Constants.APP_ID,context).then((token) {
       if (token != null) {
         _view.onLoginScuccess(token);
       } else {

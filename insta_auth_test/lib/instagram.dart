@@ -10,10 +10,10 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import 'constants.dart';
 
-const _redirectUrl = 'https://flipit.money/auth/';
+const _redirectUrl = 'https://flipit.money/';
 
-Future<Token> getToken(String appId, String appSecret,BuildContext context) async {
-  Stream<String> onCode = await _server2(context);
+Future<String> getToken(String appId,BuildContext context) async {
+  Stream<String> onCode = await webview2(context);
 
   // String url =
   //     "https://api.instagram.com/oauth/authorize?client_id=$appId&redirect_uri=http://localhost:8585&response_type=code";
@@ -23,23 +23,24 @@ Future<Token> getToken(String appId, String appSecret,BuildContext context) asyn
   print("Before getting code");
   final String code = await onCode.first;
   print("Code: "+code);
-  final http.Response response = await http
-      .post(Uri.parse("https://api.instagram.com/oauth/access_token"), body: {
-    "client_id": appId,
-    "redirect_uri": _redirectUrl,
-    "client_secret": appSecret,
-    "code": code,
-    "grant_type": "authorization_code"
-  });
-
-  print("Response body: "+response.body);
-
-  Token t = Token.fromMap(json.decode(response.body));
-  print("Token: " + t.access);
-  return t;
+  return code;
+  // final http.Response response = await http
+  //     .post(Uri.parse("https://api.instagram.com/oauth/access_token"), body: {
+  //   "client_id": appId,
+  //   "redirect_uri": _redirectUrl,
+  //   "client_secret": appSecret,
+  //   "code": code,
+  //   "grant_type": "authorization_code"
+  // });
+  // {"error_type": "OAuthException", "code": 400, "error_message": "Invalid scope: []"}
+  // print("Response body: "+response.body);
+  //
+  // Token t = Token.fromMap(json.decode(response.body));
+  // print("Token: " + t.access);
+  // return Token();
 }
 
-Future<Stream<String>> _server2(BuildContext context)async{
+Future<Stream<String>> webview2(BuildContext context)async{
   const _authUrl = 'https://api.instagram.com/oauth/authorize?client_id=${Constants.APP_ID}&redirect_uri=$_redirectUrl&scope=user_profile,user_media&response_type=code';
   final StreamController<String> onCode = StreamController();
 
@@ -60,8 +61,9 @@ Future<Stream<String>> _server2(BuildContext context)async{
 
             print("Redirect Code: "+code);
 
-            return NavigationDecision.prevent;
+            // return NavigationDecision.prevent;
           }
+
           return NavigationDecision.navigate;
         },
       ),
@@ -91,11 +93,13 @@ Future<Stream<String>> _server() async {
 }
 
 class Token {
-  String access;
-  String user_id;
+  String access="";
+  String user_id="";
   // String username;
   // String full_name;
   // String profile_picture;
+
+  Token();
 
   Token.fromMap(Map json)
       : access = json['access_token'],

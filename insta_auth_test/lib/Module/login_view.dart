@@ -44,7 +44,7 @@ class LoginScreen extends StatefulWidget{
 class _LoginScreenState extends State<LoginScreen> implements LoginViewContract {
   LoginPresenter? _presenter;
   bool? _IsLoading;
-  Token? token;
+  String? token;
 
   GlobalKey<ScaffoldState> _scaffoldKey;
 
@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewContract 
   }
 
   @override
-  void onLoginScuccess(Token t) {
+  void onLoginScuccess(String t) {
     setState(() {
       _IsLoading = false;
       token = t;
@@ -104,15 +104,9 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewContract 
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(
-                  token?.access??"NULL",
+                  "Token is following: ",
                   style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5),),
-                Text(token?.user_id??"NULL"),
-                // Center(
-                //   child: CircleAvatar(
-                //     backgroundImage: NetworkImage(token?.profile_picture??"NULL"),
-                //     radius: 50.0,
-                //   ),
-                // ),
+                SelectableText(token??"Null",style: const TextStyle(color: Colors.brown),),
               ]
           )
       );

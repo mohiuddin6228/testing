@@ -4,5 +4,5 @@
 
 class Constants {
     static const String APP_ID = "464934121987199";
-    static const String APP_SECRET = "abfe2a278314ecfa10563d34dc1e9aa4";
+    // static const String APP_SECRET = "abfe2a278314ecfa10563d34dc1e9aa4";
 }
